@@ -58,8 +58,8 @@ MAIN:
 
 INTIN:
     MOV     A,      R2      ; \ 
-	ANL     A,      #03h    ; | 
-	MOV     R0,     A       ; | 
+    ANL     A,      #03h    ; | 
+    MOV     R0,     A       ; | 
     MOV     DPTR,   #8000h  ; | Reading a number from array
     MOVX    A,      @DPTR   ; | "A" according to the control word
     ADD     A,      R0      ; | 
@@ -68,10 +68,10 @@ INTIN:
     MOV     R3,     A       ; / 
 
     MOV     A,      R2      ; \ 
-	ANL     A,      #0Ch    ; | 
-	RR      A               ; | 
-	RR      A               ; | 
-	MOV     R0,     A       ; | Reading a number from array
+    ANL     A,      #0Ch    ; | 
+    RR      A               ; | 
+    RR      A               ; | 
+    MOV     R0,     A       ; | Reading a number from array
     MOV     DPTR,   #8001h  ; | "B" according to the control word
     MOVX    A,      @DPTR   ; | 
     ADD     A,      R0      ; | 
@@ -100,7 +100,7 @@ F1_2:
     JZ      F1_4            ;
     CLR     C               ;
     SUBB    A,      R4      ;
-	JNC     F1_3            ;
+    JNC     F1_3            ;
     MOV     A,      R0      ;
     MOV     B,      A       ;
     MUL     AB              ;
@@ -117,7 +117,7 @@ F1_3:
     MOV     R0,     A       ;
     JMP     F1_2            ;
 F1_4:
-	MOV     R1,     A       ; ^
+    MOV     R1,     A       ; ^
     JMP     INTOUT          ; |
 
 
