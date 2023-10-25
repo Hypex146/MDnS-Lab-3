@@ -16,31 +16,31 @@ PREP:
     MOV     DPTR,   #8000h  ; \ 
     MOVX    A,      @DPTR   ; | 
     MOV     DPL,    A       ; | 
-    MOV     A,      #0Fh    ; | 
+    MOV     A,      #0FFh   ; | 
     MOVX    @DPTR,  A       ; | 
     INC     DPTR            ; | 
-    MOV     A,      #11h    ; | Loading array "A"
+    MOV     A,      #0ADh   ; | Loading array "A"
     MOVX    @DPTR,  A       ; | into external memory
     INC     DPTR            ; | 
-    MOV     A,      #00h    ; | 
+    MOV     A,      #64h    ; | 
     MOVX    @DPTR,  A       ; | 
     INC     DPTR            ; | 
-    MOV     A,      #0FFh   ; | 
+    MOV     A,      #79h    ; | 
     MOVX    @DPTR,  A       ; / 
 
     MOV     DPTR,   #8001h  ; \ 
     MOVX    A,      @DPTR   ; | 
     MOV     DPL,    A       ; | 
-    MOV     A,      #0FFh   ; | 
+    MOV     A,      #17h    ; | 
     MOVX    @DPTR,  A       ; | 
     INC     DPTR            ; | 
-    MOV     A,      #05Ch   ; | Loading array "B"
+    MOV     A,      #07h    ; | Loading array "B"
     MOVX    @DPTR,  A       ; | into external memory
     INC     DPTR            ; | 
-    MOV     A,      #7Ah    ; | 
+    MOV     A,      #0Ah    ; | 
     MOVX    @DPTR,  A       ; | 
     INC     DPTR            ; | 
-    MOV     A,      #0C3h   ; | 
+    MOV     A,      #0Dh    ; | 
     MOVX    @DPTR,  A       ; / 
 
     SETB    EA              ; \ 
@@ -62,7 +62,7 @@ INTIN:
     MOV     R0,     A       ; | 
     MOV     DPTR,   #8000h  ; | Reading a number from array
     MOVX    A,      @DPTR   ; | "A" according to the control word
-    ADD     A,      R0      ; | 
+    ADD     A,      R0      ; | and write it in R3
     MOV     DPL,    A       ; | 
     MOVX    A,      @DPTR   ; | 
     MOV     R3,     A       ; / 
@@ -73,7 +73,7 @@ INTIN:
     RR      A               ; | 
     MOV     R0,     A       ; | Reading a number from array
     MOV     DPTR,   #8001h  ; | "B" according to the control word
-    MOVX    A,      @DPTR   ; | 
+    MOVX    A,      @DPTR   ; | and write it in R4
     ADD     A,      R0      ; | 
     MOV     DPL,    A       ; | 
     MOVX    A,      @DPTR   ; | 
@@ -85,39 +85,31 @@ INTIN:
 
 
 F1:
-    MOV     A,      R3      ; Performing the operation at C=0
-    CLR     C               ; |
-    SUBB    A,      R4      ; V
-    JNC     F1_0            ;
-    MOV     A,      R3      ;
-    JMP     F1_1            ;
-F1_0:
-    MOV     A,      R4      ;
-    JMP     F1_1            ;
+    MOV     R0,     #0
 F1_1:
-    MOV     R0,     A       ;
+    MOV     A,      R4
+    CLR     C
+    SUBB    A,      R0
+	JC      F1_2
+    MOV     A,      R0
+    MOV     B,      A
+    MUL     AB
+	MOV     R5,     A
+	MOV     R6,     B
+	MOV     A,      R3
+	CLR     C
+	SUBB    A,      R5
+	JC      F1_2
+	MOV     A,      R6
+	JNZ     F1_2
+    MOV     A,      R0
+    INC     A
+    MOV     R0,     A
+	JMP     F1_1
 F1_2:
-    JZ      F1_4            ;
-    CLR     C               ;
-    SUBB    A,      R4      ;
-    JNC     F1_3            ;
-    MOV     A,      R0      ;
-    MOV     B,      A       ;
-    MUL     AB              ;
-    CLR     C               ;
-    SUBB    A,      R3      ;
-    JNC     F1_3            ;
-    MOV     A,      B       ;
-    JNZ     F1_3            ;
-    MOV     A,      R0      ;
-    JMP     F1_4            ;
-F1_3:
-    MOV     A,      R0      ;
-    DEC     A               ;
-    MOV     R0,     A       ;
-    JMP     F1_2            ;
-F1_4:
-    MOV     R1,     A       ; ^
+    MOV     A,      R0
+	DEC     A
+	MOV     R1,     A
     JMP     INTOUT          ; |
 
 
