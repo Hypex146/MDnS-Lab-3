@@ -85,31 +85,31 @@ INTIN:
 
 
 F1:
-    MOV     R0,     #0
-F1_1:
-    MOV     A,      R4
-    CLR     C
-    SUBB    A,      R0
-    JC      F1_2
-    MOV     A,      R0
-    MOV     B,      A
-    MUL     AB
-    MOV     R5,     A
-    MOV     R6,     B
-    MOV     A,      R3
-    CLR     C
-    SUBB    A,      R5
-    JC      F1_2
-    MOV     A,      R6
-    JNZ     F1_2
-    MOV     A,      R0
-    INC     A
-    MOV     R0,     A
-    JMP     F1_1
-F1_2:
-    MOV     A,      R0
-    DEC     A
-    MOV     R1,     A
+    MOV     R0,     #0      ; Performing the operation at C=1
+F1_1:                       ; |
+    MOV     A,      R4      ; V
+    CLR     C               ;
+    SUBB    A,      R0      ;
+    JC      F1_2            ;
+    MOV     A,      R0      ;
+    MOV     B,      A       ;
+    MUL     AB              ;
+    MOV     R5,     A       ;
+    MOV     R6,     B       ;
+    MOV     A,      R3      ;
+    CLR     C               ;
+    SUBB    A,      R5      ;
+    JC      F1_2            ;
+    MOV     A,      R6      ;
+    JNZ     F1_2            ;
+    MOV     A,      R0      ;
+    INC     A               ;
+    MOV     R0,     A       ;
+    JMP     F1_1            ;
+F1_2:                       ;
+    MOV     A,      R0      ;
+    DEC     A               ;
+    MOV     R1,     A       ; ^
     JMP     INTOUT          ; |
 
 
