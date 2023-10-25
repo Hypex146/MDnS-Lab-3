@@ -85,7 +85,7 @@ INTIN:
 
 
 F1:
-    MOV     R0,     #0      ; Performing the operation at C=1
+    MOV     R0,     #0      ; Performing the operation at C=0
 F1_1:                       ; |
     MOV     A,      R4      ; V
     CLR     C               ;
